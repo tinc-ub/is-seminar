@@ -42,13 +42,14 @@ teachers = [
 
 
 
-#now we write the fitness function which will penalize 
+#conditions:
 #everything being present,
 #lectures having a classroom that is availibe and free
 #lectures havin their teachr and none of the teacher are teching multiple
 #at the same time
 
-def schedule(ga_instance, solution, solution_idx):
+#make reading solution easier
+def easier(solution):
     lectures = []
     for i in range(len(classes)):
         classroom = classrooms[int(solution[i * 3])]
@@ -65,7 +66,11 @@ def schedule(ga_instance, solution, solution_idx):
             "duration": duration,
             "classroom": classroom
         })
+    return lectures
 
+def schedule(ga_instance, solution, solution_idx):
+    
+    lectures = easier(solution)
 
     penalty = 0
 
@@ -98,8 +103,8 @@ for _ in classes:
     gene_space.append(list(range(8, 16)))             # start hour
 
 ga_instance = pygad.GA(fitness_func=schedule,
-                       num_generations=100,                       # number of generations
-                       num_parents_mating=10,                     # number of parents selected for mutation/crossover
+                       num_generations=1000,                       # number of generations
+                       num_parents_mating=20,                     # number of parents selected for mutation/crossover
                        sol_per_pop=200,                            # population size
                        num_genes=len(gene_space),                 # 3 genes per session
                        gene_space=gene_space,
@@ -113,6 +118,8 @@ print("best schedule",solution)
 print("Fitness", solution_fitness)
 print("Index", solution_idx)
 
+#####################################################
+#AI generated visualisation
 
 def visualize(solution):
     lectures = []
@@ -153,6 +160,6 @@ def visualize(solution):
     ax.set_title("Best schedule")
     plt.tight_layout()
     plt.show()
-
+#################################################################################
 
 visualize(solution)
