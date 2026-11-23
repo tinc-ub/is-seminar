@@ -32,8 +32,10 @@ def generate_initial_population(sol_per_pop, classes, classrooms, teachers):
     return population
 
 if __name__ == "__main__":
-    classes, classrooms, teachers = initialize_schedule()
+    classes, classrooms, teachers, likes, dislikes = initialize_schedule()
     gene_space = set_gene_space(classes, classrooms, teachers)
+
+    which = 2
 
     sol_per_pop = 100
     initial_population = generate_initial_population(sol_per_pop, classes, classrooms, teachers)
@@ -42,7 +44,7 @@ if __name__ == "__main__":
     visualize(initial_population[1], classes, classrooms, teachers)
     visualize(initial_population[2], classes, classrooms, teachers)
 
-    schedule = make_fitness(classes, classrooms, teachers)
+    schedule = make_fitness(classes, classrooms, teachers, likes, dislikes, which)
     ga_instance = pygad.GA(fitness_func=schedule,
                         num_generations=1000,                       # number of generations
                         num_parents_mating=20,                      # number of parents selected for mutation/crossover
@@ -56,6 +58,10 @@ if __name__ == "__main__":
     solution, solution_fitness, solution_idx = ga_instance.best_solution()
     print("best schedule",solution)
 
-    print("Fitness", solution_fitness)
-    print("Index", solution_idx)
+    if which == 2:
+        print("Fitness (hard constraints)", solution_fitness[0])
+        print("Fitness (soft constraints)", solution_fitness[1])
+    else:
+        print("Fitness", solution_fitness)
+        print("Index", solution_idx)
     visualize(solution, classes, classrooms, teachers)
