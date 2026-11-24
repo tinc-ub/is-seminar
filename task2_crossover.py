@@ -2,6 +2,7 @@ import pygad
 import numpy as np
 from task1_modules import initialize_schedule, make_fitness, set_gene_space, visualize, lexicographic_parent_selection
 from task2_generate_init_pop import generate_initial_population
+from task4_load_schedule import load
 
 # swap all classes up to a random point between 2 consecutive parents
 def crossover_classes(parents, offspring_size, ga_instance):
@@ -31,7 +32,8 @@ def mutate_classes(offspring, ga_instance):
     return offspring
 
 if __name__ == "__main__":
-    classes, classrooms, teachers, likes, dislikes = initialize_schedule()
+    classes, classrooms, teachers, likes, dislikes = load()
+
     gene_space = set_gene_space(classes, classrooms, teachers)
 
     which = 2

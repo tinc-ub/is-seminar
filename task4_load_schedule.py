@@ -40,19 +40,21 @@ def load_teachers(path):
             classes_str = m.group("classes").strip()
             name = m.group("name").strip()
             classes = classes_str.split(",")
+            classes = [c.strip() for c in classes]
             teachers.append((name, classes))
     return teachers
 
 def load_preferences(path):
-    preferences = []
+    likes, dislikes = [], []
     with open(path, "r") as f:
         lines = f.readlines()
         for line in lines:
             m = PREFERENCES_RE.match(line)
             name = m.group("name").strip()
             prefs = ast.literal_eval(m.group("prefs"))
-            preferences.append((name, prefs))
-    return preferences
+            likes.append((name, prefs['likes']))
+            dislikes.append((name, prefs['dislikes']))
+    return likes, dislikes
 
 def load(dir="data"):
     classes_path = dir + "/Classes.txt"
@@ -63,6 +65,6 @@ def load(dir="data"):
     classes = load_classes(classes_path)
     classrooms = load_classrooms(classrooms_path)
     teachers = load_teachers(teachers_path)
-    preferences = load_preferences(preferences_path)
+    likes, dislikes = load_preferences(preferences_path)
 
-    return classes, classrooms, teachers, preferences
+    return classes, classrooms, teachers, likes, dislikes
