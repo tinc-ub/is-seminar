@@ -79,7 +79,11 @@ def create_teacher_file(out_path, first_path, middle_path, last_path, classes, n
 
     with open(out_path, "w") as f:
             for i in range(num_teachers):
-                f.write(teachers[i] + " " + str(teacher_classes[i]) + "\n")
+                teacher_classes_str = "["
+                for tc in teacher_classes[i][:-1]:
+                    teacher_classes_str += tc + ", "
+                teacher_classes_str += teacher_classes[i][-1] + "]"
+                f.write(teachers[i] + " " + teacher_classes_str + "\n")
     return teachers
 
 def create_preferences_file(out_path, teachers, classroom_open_range=(5, 22), probability_likes_first=0.8):
@@ -99,9 +103,10 @@ def create_preferences_file(out_path, teachers, classroom_open_range=(5, 22), pr
         for i in range(len(teachers)):
             f.write(teachers[i] + " " + str(preferences[i]) + "\n")
 
+def generate(in_dir="random-name", out_dir="data"):
+    classes,_ = create_classes_file(out_dir + "/Classes.txt", in_dir + "/classes-names.json", num_classes=20)
+    create_classroom_file(out_dir + "/Classrooms.txt")
+    teachers = create_teacher_file(out_dir + "/Teachers.txt", in_dir + "/first-names.json", in_dir + "/middle-names.json", in_dir + "/last-names.json", classes)
+    create_preferences_file(out_dir + "/Preferences.txt", teachers)
 
-classes,_ = create_classes_file("data/Classes.txt", "random-name/classes-names.json", num_classes=20)
-create_classroom_file("data/Classrooms.txt")
-teachers = create_teacher_file("data/Teachers.txt", "random-name/first-names.json", "random-name/middle-names.json", "random-name/last-names.json", classes)
-create_preferences_file("data/Preferences.txt", teachers)
-
+generate()
