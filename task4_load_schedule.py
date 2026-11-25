@@ -56,7 +56,7 @@ def load_preferences(path):
             dislikes.append((name, prefs['dislikes']))
     return likes, dislikes
 
-def load(dir="data"):
+def load(dir="."):
     classes_path = dir + "/Classes.txt"
     classrooms_path = dir + "/Classrooms.txt"
     teachers_path = dir + "/Teachers.txt"

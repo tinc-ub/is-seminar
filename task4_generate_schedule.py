@@ -104,9 +104,9 @@ def create_preferences_file(out_path, teachers, classroom_open_range=(5, 22), pr
             f.write(teachers[i] + " " + str(preferences[i]) + "\n")
 
 def generate(in_dir="random-name", out_dir="data"):
-    classes,_ = create_classes_file(out_dir + "/Classes.txt", in_dir + "/classes-names.json", num_classes=20)
-    create_classroom_file(out_dir + "/Classrooms.txt")
-    teachers = create_teacher_file(out_dir + "/Teachers.txt", in_dir + "/first-names.json", in_dir + "/middle-names.json", in_dir + "/last-names.json", classes)
+    classes,_ = create_classes_file(out_dir + "/Classes.txt", in_dir + "/classes-names.json", num_classes=10, len_lecture_range=(2,4))
+    create_classroom_file(out_dir + "/Classrooms.txt", num_classrooms=20)
+    teachers = create_teacher_file(out_dir + "/Teachers.txt", in_dir + "/first-names.json", in_dir + "/middle-names.json", in_dir + "/last-names.json", classes, num_teachers=50)
     create_preferences_file(out_dir + "/Preferences.txt", teachers)
 
 generate()

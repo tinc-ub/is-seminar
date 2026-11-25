@@ -1,5 +1,6 @@
 import pygad
 from task1_modules import initialize_schedule, make_fitness, set_gene_space, visualize
+from task4_load_schedule import load
 
 # We greedily go in order of classes and find the first slot we can assign the class to.
 # The time slots are ordered by ["classroom", "time"] so we first try to assign
@@ -32,10 +33,8 @@ def generate_initial_population(sol_per_pop, classes, classrooms, teachers):
     return population
 
 if __name__ == "__main__":
-    classes, classrooms, teachers, likes, dislikes = initialize_schedule()
+    classes, classrooms, teachers, likes, dislikes = load()
     gene_space = set_gene_space(classes, classrooms, teachers)
-
-    which = 2
 
     sol_per_pop = 100
     initial_population = generate_initial_population(sol_per_pop, classes, classrooms, teachers)
@@ -44,9 +43,9 @@ if __name__ == "__main__":
     visualize(initial_population[1], classes, classrooms, teachers)
     visualize(initial_population[2], classes, classrooms, teachers)
 
-    schedule = make_fitness(classes, classrooms, teachers, likes, dislikes, which)
+    schedule = make_fitness(classes, classrooms, teachers, likes, dislikes)
     ga_instance = pygad.GA(fitness_func=schedule,
-                        num_generations=1000,                       # number of generations
+                        num_generations=100,                        # number of generations
                         num_parents_mating=20,                      # number of parents selected for mutation/crossover
                         sol_per_pop=sol_per_pop,                            # population size
                         num_genes=len(gene_space),                  # 3 genes per session
@@ -58,10 +57,6 @@ if __name__ == "__main__":
     solution, solution_fitness, solution_idx = ga_instance.best_solution()
     print("best schedule",solution)
 
-    if which == 2:
-        print("Fitness (hard constraints)", solution_fitness[0])
-        print("Fitness (soft constraints)", solution_fitness[1])
-    else:
-        print("Fitness", solution_fitness)
-        print("Index", solution_idx)
+    print("Fitness", solution_fitness)
+    print("Index", solution_idx)
     visualize(solution, classes, classrooms, teachers)

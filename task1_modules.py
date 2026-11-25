@@ -229,12 +229,14 @@ def make_fitness(classes, classrooms, teachers, likes, dislikes, which=1):
 
 def set_gene_space(classes, classrooms, teachers):
     gene_space = []
+    starthour = min([h for _,h,_ in classrooms])
+    endhour = max([h for _,_,h in classrooms])
     for name, _ in classes:
         gene_space.append(list(range(len(classrooms))))   # classroom index
         gene_space.append([
             i for i, (_, subjects) in enumerate(teachers) if name in subjects
         ])                                                # teacher index (only valid teachers)
-        gene_space.append(list(range(8, 16)))             # start hour
+        gene_space.append(list(range(starthour, endhour)))             # start hour
     return gene_space
 
 #####################################################
