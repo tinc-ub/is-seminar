@@ -17,7 +17,7 @@ def generate_initial_population(sol_per_pop, classes, classrooms, teachers):
     for _ in range(sol_per_pop):
         gene = []
         for subject, duration in classes:
-            while open_until_time - cur_time < duration: # We assume there is a room that can fit the class duration.
+            while open_until_time - cur_time + 1 < duration: # We assume there is a room that can fit the class duration.
                 classroom = (classroom + 1) % len(classrooms) # We loop classrooms and "clear" the classrooms
                 cur_time = classrooms[classroom][1]
                 open_until_time = classrooms[classroom][2]
@@ -33,7 +33,7 @@ def generate_initial_population(sol_per_pop, classes, classrooms, teachers):
     return population
 
 if __name__ == "__main__":
-    classes, classrooms, teachers, likes, dislikes = load()
+    classes, classrooms, teachers, likes, dislikes = load("data/realistic")
     gene_space = set_gene_space(classes, classrooms, teachers)
 
     sol_per_pop = 100

@@ -95,8 +95,8 @@ def make_fitness(classes, classrooms, teachers, likes, dislikes, which=1):
             if i["start"]<roomStart: penalty+=1
             if (i["start"]+i["duration"]) > roomEnd: penalty+=1
 
-            teacher, teachesSubject= i["teacher"]
-            if i["subject"] not in teachesSubject: penalty+=1
+            #teacher, teachesSubject= i["teacher"] # should never happen due to gene space constrains
+            #if i["subject"] not in teachesSubject: penalty+=1
 
         for i in range(len(lectures)):
             for j in range(i+1, len(lectures)):
@@ -230,7 +230,7 @@ def make_fitness(classes, classrooms, teachers, likes, dislikes, which=1):
 def set_gene_space(classes, classrooms, teachers):
     gene_space = []
     starthour = min([h for _,h,_ in classrooms])
-    endhour = max([h for _,_,h in classrooms])
+    endhour = max([h for _,_,h in classrooms]) - 1
     for name, _ in classes:
         gene_space.append(list(range(len(classrooms))))   # classroom index
         gene_space.append([
@@ -264,6 +264,9 @@ def visualize(solution, classes, classrooms, teachers):
     colors = plt.cm.tab10.colors
     subject_color = {s: colors[i % len(colors)] for i, s in enumerate(subjects)}
 
+    starthour = min([h for _,h,_ in classrooms])
+    endhour = max([h for _,_,h in classrooms])
+
     fig, ax = plt.subplots(figsize=(8, 6))
 
     for lecture in lectures:
@@ -276,8 +279,9 @@ def visualize(solution, classes, classrooms, teachers):
 
     ax.set_xticks(range(len(room_names)))
     ax.set_xticklabels(room_names)
+    ax.set_yticks(range(starthour, endhour+1))
     ax.set_ylabel("Hour")
-    ax.set_ylim(16, 8)
+    ax.set_ylim(starthour, endhour)
     ax.set_title("Best schedule")
     plt.tight_layout()
     plt.show()

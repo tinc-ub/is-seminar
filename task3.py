@@ -7,7 +7,7 @@ from task4_load_schedule import load
 
 
 if __name__ == "__main__":
-    classes, classrooms, teachers, likes, dislikes = load("data")
+    classes, classrooms, teachers, likes, dislikes = load("data/realistic")
 
     gene_space = set_gene_space(classes, classrooms, teachers)
 
@@ -32,15 +32,15 @@ if __name__ == "__main__":
                             parent_selection_type=lexicographic_parent_selection)
     else:
         ga_instance = pygad.GA(fitness_func=schedule,
-                                    num_generations=1000,                       # number of generations
-                                    num_parents_mating=200,                      # number of parents selected for mutation/crossover
-                                    sol_per_pop=sol_per_pop,                            # population size
-                                    num_genes=len(gene_space),                  # 3 genes per session
-                                    initial_population=initial_population,
-                                    gene_space=gene_space,
-                                    crossover_type=crossover_classes,
-                                    mutation_type=mutate_classes,
-                                    gene_type=int)
+                            num_generations=1000,                       # number of generations
+                            num_parents_mating=200,                      # number of parents selected for mutation/crossover
+                            sol_per_pop=sol_per_pop,                            # population size
+                            num_genes=len(gene_space),                  # 3 genes per session
+                            initial_population=initial_population,
+                            gene_space=gene_space,
+                            crossover_type=crossover_classes,
+                            mutation_type=mutate_classes,
+                            gene_type=int)
 
     ga_instance.run()
 

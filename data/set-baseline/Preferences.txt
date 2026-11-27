@@ -1,0 +1,5 @@
+Ilise_Otho_Burwell {'likes': [5, 16], 'dislikes': [20, 22]}
+Laurette_Fabian_Oxley {'likes': [5, 11], 'dislikes': [12, 17]}
+Hailee_Obau {'likes': [9, 12], 'dislikes': [15, 22]}
+Annabell_Paddy_Ole {'likes': [5, 11], 'dislikes': [20, 21]}
+Donielle_Lainey {'likes': [12, 14], 'dislikes': [19, 22]}
