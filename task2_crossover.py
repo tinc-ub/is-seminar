@@ -32,7 +32,7 @@ def mutate_classes(offspring, ga_instance):
     return offspring
 
 if __name__ == "__main__":
-    classes, classrooms, teachers, likes, dislikes = load("data/many-classrooms")
+    classes, classrooms, teachers, likes, dislikes = load("data/realistic")
 
     gene_space = set_gene_space(classes, classrooms, teachers)
 

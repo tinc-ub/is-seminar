@@ -1,34 +1,37 @@
 import pygad
+import random
 from task1_modules import initialize_schedule, make_fitness, set_gene_space, visualize
 from task4_load_schedule import load
 
-# We greedily go in order of classes and find the first slot we can assign the class to.
-# The time slots are ordered by ["classroom", "time"] so we first try to assign
-# the class to classroom 0, then classroom 1, ...
-# If we can't assign the class to the current classroom, we move on and do not to try to
-# fill the empty class in later attempts.
-# We assign the first teachr that fits.
+# We start with a random classrom, then we greedily go in order of classes and find the first slot we can assign the class to.
+# If we can't assign the class to the current classroom, we move on.
+# We assign a random first teacher that fits.
+# If we 'filler' every classroom we simple go on and treet each classroom as empty
 def generate_initial_population(sol_per_pop, classes, classrooms, teachers):
-    cur_time = classrooms[0][1] # the time up to which we have greedily filled classes
-    open_until_time = classrooms[0][2]
-    classroom = 0
-
     population = []
+    shuffled_classes = list(enumerate(classes))
     for _ in range(sol_per_pop):
-        gene = []
-        for subject, duration in classes:
+        classroom = random.choice(list(range(len(classrooms)))) # Randomly start with one classroom
+        cur_time = classrooms[classroom][1] # the time up to which we have greedily filled classes
+        open_until_time = classrooms[classroom][2]
+        
+        gene = [0] * (3 * len(classes))
+
+        random.shuffle(shuffled_classes)
+        for idx, (subject, duration) in shuffled_classes:
             while open_until_time - cur_time + 1 < duration: # We assume there is a room that can fit the class duration.
                 classroom = (classroom + 1) % len(classrooms) # We loop classrooms and "clear" the classrooms
                 cur_time = classrooms[classroom][1]
                 open_until_time = classrooms[classroom][2]
 
-            for i, (_, subjects) in enumerate(teachers):
-                if subject in subjects:
-                    gene.append(classroom)
-                    gene.append(i)
-                    gene.append(cur_time)
-                    cur_time += duration
-                    break
+            elegible_teachers = [i for i, (_, subjects) in enumerate(teachers) if subject in subjects]
+            selected_teacher = random.choice(elegible_teachers)
+
+            gene[3*idx] = classroom
+            gene[3*idx + 1] = selected_teacher
+            gene[3*idx + 2] = cur_time
+            cur_time += duration
+
         population.append(gene)
     return population
 
@@ -36,7 +39,7 @@ if __name__ == "__main__":
     classes, classrooms, teachers, likes, dislikes = load("data/realistic")
     gene_space = set_gene_space(classes, classrooms, teachers)
 
-    sol_per_pop = 100
+    sol_per_pop = 50
     initial_population = generate_initial_population(sol_per_pop, classes, classrooms, teachers)
     print("The initial population generated using greedy algorithm.")
     visualize(initial_population[0], classes, classrooms, teachers)

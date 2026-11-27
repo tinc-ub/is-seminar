@@ -18,7 +18,7 @@ if __name__ == "__main__":
     schedule = make_fitness(classes, classrooms, teachers, likes, dislikes, which)
     if which == 2:
         ga_instance = pygad.GA(fitness_func=schedule,
-                            num_generations=1000,                       # number of generations
+                            num_generations=500,                       # number of generations
                             num_parents_mating=20,                      # number of parents selected for mutation/crossover
                             sol_per_pop=sol_per_pop,                            # population size
                             num_genes=len(gene_space),                  # 3 genes per session
@@ -32,9 +32,9 @@ if __name__ == "__main__":
                             parent_selection_type=lexicographic_parent_selection)
     else:
         ga_instance = pygad.GA(fitness_func=schedule,
-                            num_generations=1000,                       # number of generations
-                            num_parents_mating=200,                      # number of parents selected for mutation/crossover
-                            sol_per_pop=sol_per_pop,                            # population size
+                            num_generations=500,                       # number of generations
+                            num_parents_mating=20,                      # number of parents selected for mutation/crossover
+                            sol_per_pop=sol_per_pop,                     # population size
                             num_genes=len(gene_space),                  # 3 genes per session
                             initial_population=initial_population,
                             gene_space=gene_space,
